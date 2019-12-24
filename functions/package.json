@@ -10,12 +10,17 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "main": "lib/index.js",
   "dependencies": {
-    "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0"
+    "@types/compression": "^1.0.1",
+    "@types/express": "^4.17.2",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.9.0",
+    "firebase-functions": "^3.3.0",
+    "typescript-ioc": "^1.2.5"
   },
   "devDependencies": {
     "tslint": "^5.12.0",

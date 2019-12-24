@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "mld-records-beta",
+    "beta": "mld-records-beta",
     "prod": "mld-records-prod"
   }
 }

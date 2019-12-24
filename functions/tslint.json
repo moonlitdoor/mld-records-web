@@ -1,4 +1,5 @@
 {
+  "extends": "tslint:recommended",
   "rules": {
     // -- Strict errors --
     // These lint rules are likely always a good idea.
@@ -108,7 +109,8 @@
     "prefer-const": {"severity": "warning"},
 
     // Multi-line object literals and function calls should have a trailing comma. This helps avoid merge conflicts.
-    "trailing-comma": {"severity": "warning"}
+    "trailing-comma": {"severity": "warning"},
+    "max-line-length": [ true, 150 ]
   },
 
   "defaultSeverity": "error"

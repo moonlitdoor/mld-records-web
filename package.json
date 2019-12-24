@@ -1,0 +1,9 @@
+{
+  "name": "mld-records-web",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "rm -rf *.log;rm -rf ./functions/lib",
+    "deploy:beta": "firebase --project beta deploy",
+    "deploy:prod": "firebase --project prod deploy"
+  }
+}
