@@ -57,6 +57,14 @@ export class OpenApi {
         return this;
     }
 
+    public addTagAt(index: number, tag: Tag): OpenApi {
+        if (this.tags === undefined) {
+            this.tags = [];
+        }
+        this.tags.splice(index, 0, tag);
+        return this;
+    }
+
     public addServer(server: Server): OpenApi {
         if (this.servers === undefined) {
             this.servers = [];

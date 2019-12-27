@@ -1,48 +1,88 @@
 import {Request, Response as Resp} from "express";
-import { Provided, Provider} from "typescript-ioc";
+import about from "../about";
+import {Api} from "../api";
 import {
-    Contact, ExternalDocumentation, Header,
-    HttpStatusCode, Info, License, OpenApi,
-    Operation, PathItem, Response, Responses,
-    Server, ServerVariable, Tag
+    Components,
+    Contact,
+    ExternalDocumentation,
+    Header,
+    HttpStatus,
+    HttpStatusCode,
+    Info,
+    License,
+    MediaType,
+    OpenApi,
+    Operation,
+    PathItem,
+    Reference,
+    Response,
+    Responses,
+    Schema,
+    Server,
+    Tag
 } from "../oas";
+import {Router} from "../router";
+import {Stub} from "../stub";
 
-const documentationProvider: Provider = {
-    get: () => {
-        return new Documentation();
-    }
-};
-
-@Provided(documentationProvider)
 export class Documentation {
 
-    private static TAG: string = "Documentation";
+    public static init(router: Router, name: string, rootPath: string, title: string, description: string, isBaseApi: boolean = false) {
 
-    // openApi
-    // .wiTag(new Tag().wName(Documentation.TAG))
-    //     .setPath("/", new PathItem()
-    //         .withGet(new Operation(
-    //             new Responses()
-    //                 .setResponse(HttpStatusCode.OK, new Response(HttpStatusCode.OK)
-    //                     .setHeader("Content-Type", new Header()))
-    //         )));
-    // .wTag(Documentation.TAG)
-    // .wOperationId("docs")
-    // .wSummary("Documentation")
-    // .wDescription("The API documentation.")
-    // .wProduces("text/html")
-    // .wResponse("200", new Response()
-    //     .wDescription("OK")
-    //     .wHeader("Content-Type", new StringProperty()
-    //         .wType("String")
-    //         .wFormat("text/html")
-    //         .wDescription("The media-type that is returned."))
-    //     .wExample("test", "test")
-    //     .wSchema(new FileProperty()
-    //         .wExample(Documentation.HTML)))));
+        OpenApi.get(name)
+            .withInfo(new Info(title, about.version)
+                .withDescription(description)
+                .withTermsOfService("/tos")
+                .withContact(new Contact()
+                    .withName("Moonlit Door Software")
+                    .withUrl("https://www.moonlitdoor.com")
+                    .withEmail("support@moonlitdoor.com"))
+                .withLicense(new License("MIT")
+                    .withUrl("https://github.com/moonlitdoor/mld-records-web/blob/master/LICENSE")))
+            .addServer(new Server(rootPath))
+            .withComponents(new Components()
+                .setResponse("INTERNAL_SERVER_ERROR", new Response(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .setContent("None", new MediaType()
+                        .withExample(""))))
+            .addTag(new Tag(Documentation.TAG)
+                .withDescription("API Documentation"))
+            .setPath("/", new PathItem()
+                .withGet(new Operation(new Responses()
+                    .setResponse(HttpStatusCode.OK, new Response(HttpStatus.OK)
+                        .setContent("HTML", new MediaType()
+                            .withSchema(new Schema()
+                                .withType("HTML"))
+                            .withExample("<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n\t...\n  </body>\n</html>"))
+                        .setHeader("Content-Type", new Header().withSchema(new Schema().withType("text/html"))))
+                    .setResponse(HttpStatusCode.INTERNAL_SERVER_ERROR, new Reference("#/components/responses/INTERNAL_SERVER_ERROR")))
+                    .addTag(Documentation.TAG)
+                    .withOperationId("docs")
+                    .withSummary("Docs")
+                    .withDescription("The documentation of the API.")))
+            .setPath("/data", new PathItem()
+                .withGet(new Operation(new Responses()
+                    .setResponse(HttpStatusCode.OK, new Response(HttpStatus.OK)
+                        .setContent("OpenAPI", new MediaType()
+                            .withSchema(new Schema()
+                                .withType("OpenAPI")
+                                .withExternalDocumentation(new ExternalDocumentation("https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md")
+                                    .withDescription("Specification")))
+                            .withExample("{\"openapi\":\"3.0.2\",\"paths\":...}"))
+                        .setHeader("Content-Type", new Header().withSchema(new Schema().withType("application/json")))
+                        .setHeader("Content-Encoding", new Header().withSchema(new Schema().withType("gzip"))))
+                    .setResponse(HttpStatusCode.INTERNAL_SERVER_ERROR, new Reference("#/components/responses/INTERNAL_SERVER_ERROR")))
+                    .addTag(Documentation.TAG)
+                    .withOperationId("data")
+                    .withSummary("Data")
+                    .withDescription("The OpenAPI data for the documentation")));
 
-    public getDocumentationHandler(rootPath: string): (request: Request, response: Resp) => void {
-        return (request: Request, response: Resp): void => {
+        if (isBaseApi) {
+            OpenApi.get(name).addTagAt(0, new Tag("APIs")
+                .withExternalDocumentation(new ExternalDocumentation(Stub.PATH).withDescription(Stub.TITLE)));
+        } else {
+            OpenApi.get(name).withExternalDocumentation(new ExternalDocumentation(Api.PATH).withDescription(Api.TITLE));
+        }
+
+        router.get("/", (request: Request, response: Resp) => {
             response.send(`
 <!DOCTYPE html>
 <html lang="en">
@@ -54,55 +94,17 @@ export class Documentation {
     <style>body{margin:0;padding:0;}</style>
   </head>
   <body>
-    <redoc spec-url="${rootPath}/data" path-in-middle-panel expand-responses="200,201"</redoc>
+    <redoc spec-url="${rootPath}/data" path-in-middle-panel hide-download-button expand-responses="200,201"</redoc>
     <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
   </body>
-</html>`
-            );
-        };
+</html>`);
+        });
+
+        router.get("/data", (request: Request, response: Resp) => {
+            response.json(OpenApi.get(name));
+        });
     }
 
-    // openApi
-    //     .wPath("/data", new PathItem()
-    //         .wGet(new Operation()
-    //             .wTag(Documentation.TAG)
-    //             .wOperationId("data")
-    //             .wSummary("Data")
-    //             .wDescription("The OpenAPI definition.")
-    //             .wProduces("application/json")
-    //             .wResponse("200", new Response()
-    //                 .wDescription("OK")
-    //                 .wHeader("Content-Type", new StringProperty()
-    //                     .wType("String")
-    //                     .wFormat("application/json")
-    //                     .wDescription("The media-type that is returned."))
-    //                 .wSchema(new ObjectProperty()
-    //                     .wTitle("Json Object")
-    //                     .wType("OpenApi 2.0")
-    //                     .wExample({})
-    //                 ))));
+    private static TAG: string = "Documentation";
 
-    public getDataHandler(openApi: OpenApi, title: string, description: string): (request: Request, response: Resp) => void {
-
-        openApi
-            .withInfo(new Info(title, "0.0.0-1-gabc1234")
-                .withDescription("this is a test description")
-                .withTermsOfService("Terms of service")
-                .withContact(new Contact()
-                    .withName("Moonlit Door Software")
-                    .withUrl("https://example.com")
-                    .withEmail("support@moonlitdoor.com"))
-                .withLicense(new License("MIT")
-                    .withUrl("https:example.com/license")))
-            .addServer(new Server("http://records.clinic")
-                .withDescription("server description")
-                .setVariable("someKey", new ServerVariable("adgadf")
-                    .withDescription("server var description")
-                    .addEnum("a")
-                    .addEnum("b")));
-
-        return (request: Request, response: Resp): void => {
-            response.json(openApi);
-        };
-    }
 }

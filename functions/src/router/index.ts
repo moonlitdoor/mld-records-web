@@ -1,25 +1,34 @@
 import compression from "compression";
-import express, {Application, RequestHandler, Router as ERouter} from "express";
+import express, {Request, RequestHandler, Response as Resp, Router as ERouter} from "express";
 // tslint:disable-next-line:no-implicit-dependencies
 import {PathParams} from "express-serve-static-core";
-import {Singleton} from "typescript-ioc";
+import {Inject, Provided, Provider} from "typescript-ioc";
+import {Server} from "../server";
 
-@Singleton
+const routerProvider: Provider = {
+    get: () => {
+        return new Router();
+    }
+};
+
+@Provided(routerProvider)
 export class Router {
 
-    private app: Application;
+    // @ts-ignore
+    @Inject private server: Server;
     private readonly router: ERouter = express.Router();
 
     constructor() {
-        this.app = express();
-        this.app.disable("x-powered-by");
         this.router = express.Router();
         this.router.use(express.json());
         this.router.use(compression());
     }
 
     public init(path: string): express.Application {
-        return this.app.use(path, this.router);
+        this.router.get("**", (request: Request, response: Resp) => {
+            response.redirect(path);
+        });
+        return this.server.init(path, this.router);
     }
 
     public get(path: PathParams, ...handlers: RequestHandler[]) {

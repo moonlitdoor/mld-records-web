@@ -21,6 +21,10 @@
     ],
     "rewrites": [
       {
+        "source": "/api/stub{,/**}",
+        "function": "stub"
+      },
+      {
         "source": "/api{,/**}",
         "function": "api"
       },
