@@ -1,0 +1,27 @@
+name: Records Release CI
+
+on:
+  push:
+    tags:
+      - '[0-9]*.[0-9]*.[0-9]*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install
+      run: npm install
+    - name: Version
+      run: npm run version
+    - name: Lint
+      run: npm run lint
+    - name: Build
+      run: npm run build
+    - name: Test
+      run: echo Running some tests here some day
+    - name: Deploy
+      env:
+        FIREBASE_TOKEN: ${{ secrets.firebase_token }}
+      run: npm run deploy:prod
