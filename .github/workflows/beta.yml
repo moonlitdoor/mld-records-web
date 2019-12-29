@@ -1,0 +1,21 @@
+name: Records Beta CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: npm run build
+    - name: Lint
+      run: npm run lint
+    - name: Test
+      run: echo Running some tests here some day
+    - name: Deploy
+      run: npm run deploy:beta
