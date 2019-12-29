@@ -15,6 +15,7 @@ exec(cmd1, function (error, stdout1) {
         } else {
             data.version = stdout1.trim();
         }
+        console.log(data);
         // fs.writeFileSync("./hosting/src/about.json", JSON.stringify(data));
         fs.writeFileSync("./functions/src/about.ts", "const about = " + JSON.stringify(data) + ";\nexport default about;\n");
     });

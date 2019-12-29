@@ -1,2 +1,2 @@
-const about = {"version":"local","date":0};
+const about = {"version":"LOCALHOST","date":0};
 export default about;
