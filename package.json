@@ -1,9 +1,23 @@
 {
   "name": "mld-records-web",
   "version": "1.0.0",
+  "description": "Records Website",
+  "repository": "github:moonlitdoor/mld-records-web",
+  "license": "MIT",
   "scripts": {
     "clean": "rm -rf *.log;rm -rf ./functions/lib",
+    "postinstall": "cd functions && npm install",
+    "build": "npm run build:functions",
+    "build:functions": "cd functions && node_modules/.bin/tsc",
+    "build:functions:watch": "cd functions && node_modules/.bin/tsc --watch",
+    "lint": "npm run lint:functions",
+    "lint:functions": "cd functions && node_modules/.bin/tslint --project tsconfig.json",
+    "start": "firebase serve",
     "deploy:beta": "firebase --project beta deploy",
     "deploy:prod": "firebase --project prod deploy"
+  },
+  "devDependencies": {
+    "@angular/cli": "7.2.2",
+    "firebase-tools": "7.11.0"
   }
 }

@@ -143,8 +143,8 @@ export class Schema {
         return this;
     }
 
-    public withDefault(_default: any): Schema {
-        this.default = _default;
+    public withDefault(def: any): Schema {
+        this.default = def;
         return this;
     }
 

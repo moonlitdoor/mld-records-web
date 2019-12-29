@@ -17,10 +17,10 @@ export class Parameter {
     private examples?: Dictionary<Example | Reference>;
     private content?: Dictionary<MediaType>;
 
-    constructor(name: string | undefined, _in: ParameterLocation) {
+    constructor(name: string | undefined, location: ParameterLocation) {
         this.name = name;
-        this.in = _in;
-        if (_in === ParameterLocation.PATH) {
+        this.in = location;
+        if (location === ParameterLocation.PATH) {
             this.required = true;
         }
     }

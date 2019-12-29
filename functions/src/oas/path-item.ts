@@ -46,8 +46,8 @@ export class PathItem {
         return this;
     }
 
-    public withDelete(_delete: Operation): PathItem {
-        this.delete = _delete;
+    public withDelete(del: Operation): PathItem {
+        this.delete = del;
         return this;
     }
 
