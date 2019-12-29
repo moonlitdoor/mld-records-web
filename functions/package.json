@@ -1,5 +1,9 @@
 {
   "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc"
+  },
   "engines": {
     "node": "10"
   },
