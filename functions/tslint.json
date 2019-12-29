@@ -112,6 +112,10 @@
     "trailing-comma": {"severity": "warning"},
     "max-line-length": [ true, 150 ]
   },
-
+  "linterOptions": {
+    "exclude": [
+      "src/about.ts"
+    ]
+  },
   "defaultSeverity": "error"
 }
