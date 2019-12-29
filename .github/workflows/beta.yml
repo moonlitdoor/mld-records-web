@@ -20,4 +20,6 @@ jobs:
     - name: Test
       run: echo Running some tests here some day
     - name: Deploy
+      env:
+        FIREBASE_TOKEN: ${{ secrets.firebase_token }}
       run: npm run deploy:beta
