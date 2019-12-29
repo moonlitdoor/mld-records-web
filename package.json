@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rm -rf *.log;rm -rf ./functions/lib",
     "postinstall": "cd functions && npm install",
+    "version": "node version.js",
     "build": "npm run build:functions",
     "build:functions": "cd functions && node_modules/.bin/tsc",
     "build:functions:watch": "cd functions && node_modules/.bin/tsc --watch",
