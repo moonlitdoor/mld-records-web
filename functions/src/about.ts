@@ -1,2 +1,2 @@
-const about = {"version":"0.0.0-8-g44c4be5-SNAPSHOT","date":1577603084413};
+const about = {"version":"local","date":0};
 export default about;
