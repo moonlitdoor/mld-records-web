@@ -5,20 +5,22 @@
   "repository": "github:moonlitdoor/mld-records-web",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf *.log;rm -rf ./functions/lib",
-    "postinstall": "cd functions && npm install",
+    "clean": "rm -rf node_modules; rm -rf functions/node_modules; rm -rf hosting/node_modules; rm -rf *.log; rm -rf ./functions/lib; rm -rf public",
+    "postinstall": "cd functions && npm install; cd ../hosting && npm install",
     "version": "node version.js",
-    "build": "npm run build:functions",
+    "build": "npm run build:functions; npm run build:hosting",
     "build:functions": "cd functions && node_modules/.bin/tsc",
     "build:functions:watch": "cd functions && node_modules/.bin/tsc --watch",
-    "lint": "npm run lint:functions",
+    "build:hosting": "cd hosting && node_modules/.bin/ng build --prod",
+    "build:hosting:watch": "cd hosting && node_modules/.bin/ng build --watch",
+    "lint": "npm run lint:functions; npm run lint:hosting",
     "lint:functions": "cd functions && node_modules/.bin/tslint --project tsconfig.json",
+    "lint:hosting": "cd hosting && node_modules/.bin/ng lint",
     "start": "firebase serve",
     "deploy:beta": "firebase --project beta deploy",
     "deploy:prod": "firebase --project prod deploy"
   },
   "devDependencies": {
-    "@angular/cli": "7.2.2",
     "firebase-tools": "7.11.0"
   }
 }
