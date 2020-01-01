@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script>console.log(window.location.origin);
-  // if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
-  //   window.location.replace("https://records.clinic" + window.location.path(true))
-  // } else if (window.location.origin === "https://mld-records-beta.web.app" || window.location.origin === "https://mld-records-beta.firebaseapp.com") {
-  //   window.location.replace("https://beta.records.clinic" + window.location.path(true))
-  // }
-  </script>
+  <script>if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
+    window.location.replace("https://records.clinic" + window.location.path(true))
+  } else if (window.location.origin === "https://mld-records-beta.web.app" || window.location.origin === "https://mld-records-beta.firebaseapp.com") {
+    window.location.replace("https://beta.records.clinic" + window.location.path)
+  }</script>
   <meta charset="utf-8">
   <title>Hosting</title>
   <base href="/">
