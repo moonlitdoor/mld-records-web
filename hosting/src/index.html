@@ -1,15 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script>
-    let path = "";
-    if (window.location.path) {
-      path = window.location.path
-    }
-    if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
-      window.location.replace("https://records.clinic" + path)
+  <script>if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
+      window.location.replace("https://records.clinic" + window.location.pathname)
     } else if (window.location.origin === "https://mld-records-beta.web.app" || window.location.origin === "https://mld-records-beta.firebaseapp.com") {
-      window.location.replace("https://beta.records.clinic" + path)
+      window.location.replace("https://beta.records.clinic" + window.location.pathname)
     }</script>
   <meta charset="utf-8">
   <title>Hosting</title>
