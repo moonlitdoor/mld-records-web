@@ -1,11 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script>if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
-    window.location.replace("https://records.clinic" + window.location.path(true))
-  } else if (window.location.origin === "https://mld-records-beta.web.app" || window.location.origin === "https://mld-records-beta.firebaseapp.com") {
-    window.location.replace("https://beta.records.clinic" + window.location.path)
-  }</script>
+  <script>
+    let path = "";
+    if (window.location.path) {
+      path = window.location.path
+    }
+    if (window.location.origin === "https://mld-records-prod.web.app" || window.location.origin === "https://mld-records-prod.firebaseapp.com") {
+      window.location.replace("https://records.clinic" + path)
+    } else if (window.location.origin === "https://mld-records-beta.web.app" || window.location.origin === "https://mld-records-beta.firebaseapp.com") {
+      window.location.replace("https://beta.records.clinic" + path)
+    }</script>
   <meta charset="utf-8">
   <title>Hosting</title>
   <base href="/">
